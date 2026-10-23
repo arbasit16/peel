@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DYMO Label Software for Mac – Native, Barcodes Included</title>
+  <meta name="description" content="Peel is a native Mac app for designing labels for your DYMO LabelWriter, with barcodes included and a one-time price. Join the beta for early access.">
+  <link rel="canonical" href="https://arbasit16.github.io/peel/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://arbasit16.github.io/peel/">
+  <meta property="og:title" content="Peel – DYMO label software for Mac">
+  <meta property="og:description" content="Keep your DYMO working on your Mac after Rosetta. A native label designer, barcodes included, one-time price. Join the beta.">
+  <meta property="og:image" content="https://arbasit16.github.io/peel/images/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Peel's window on a MacBook, showing an address label filled from a spreadsheet">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <meta name="color-scheme" content="light dark">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #17203a;
+      --muted: #55607a;
+      --line: #dfe4ee;
+      --accent: #0a66d8;
+      --accent-text: #ffffff;
+      --ok: #1f7a3d;
+      --error: #b42318;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14171f;
+        --surface: #1d212b;
+        --text: #eef1f7;
+        --muted: #a6aec0;
+        --line: #2f3542;
+        --accent: #4b9bff;
+        --accent-text: #0b1220;
+        --ok: #6fd18f;
+        --error: #ff8a80;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+    a { color: var(--accent); }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+    header.top { display: flex; align-items: center; gap: 10px; padding: 20px 0 0; font-weight: 600; }
+    header.top img { width: 32px; height: 32px; border-radius: 8px; }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 40px; align-items: center; padding: 36px 0 56px; }
+    h1 { font-size: clamp(2rem, 4.2vw, 3.1rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 16px; }
+    .sub { font-size: 1.15rem; color: var(--muted); margin: 0 0 24px; }
+    .hero img.shot { width: 100%; height: auto; display: block; }
+
+    form.signup { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+    form.signup label { display: block; font-weight: 600; font-size: 0.95rem; margin: 0 0 6px; }
+    form.signup .hint { font-weight: 400; color: var(--muted); }
+    form.signup input[type=email], form.signup input[type=text] {
+      width: 100%; font: inherit; padding: 10px 12px; border-radius: 9px;
+      border: 1px solid var(--line); background: var(--bg); color: var(--text);
+    }
+    form.signup .field { margin-bottom: 14px; }
+    form.signup fieldset { border: 0; padding: 0; margin: 0 0 16px; }
+    form.signup legend { font-weight: 600; font-size: 0.95rem; padding: 0; margin-bottom: 6px; }
+    form.signup .choices { display: flex; flex-wrap: wrap; gap: 16px; }
+    form.signup .choices label { font-weight: 400; display: inline-flex; align-items: center; gap: 6px; margin: 0; }
+    button {
+      font: inherit; font-weight: 600; cursor: pointer; border: 0; border-radius: 10px;
+      padding: 11px 18px; background: var(--accent); color: var(--accent-text);
+    }
+    button:disabled { opacity: 0.6; cursor: default; }
+    button.secondary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    .note { font-size: 0.85rem; color: var(--muted); margin: 10px 0 0; }
+    .status { margin: 10px 0 0; font-weight: 600; }
+    .status.ok { color: var(--ok); }
+    .status.error { color: var(--error); }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+    section { padding: 48px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 1.6rem; letter-spacing: -0.01em; margin: 0 0 18px; }
+    ul.points { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+    ul.points li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+    ul.points li strong { display: block; }
+    .sources { display: block; margin-top: 6px; font-size: 0.85rem; color: var(--muted); }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .price { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+    .price .amount { font-size: 2rem; font-weight: 700; }
+    .honest { max-width: 720px; }
+    footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+    footer p { margin: 4px 0; }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 24px; }
+      .hero .visual { order: 2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <img src="images/peel-icon.png" alt="" width="32" height="32">
+      <span>Peel</span>
+    </header>
+
+    <main>
+      <div class="hero">
+        <div>
+          <h1>Keep your DYMO working on your Mac after Rosetta</h1>
+          <p class="sub">Peel is a native Mac label designer for your DYMO LabelWriter. Built natively for Apple Silicon, no Rosetta. Barcodes included, and a one-time price.</p>
+
+          <form class="signup" id="signup" novalidate>
+            <div class="field">
+              <label for="email">Get early access</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+            <div class="field">
+              <label for="printer">Which printer do you have? <span class="hint">(optional)</span></label>
+              <input id="printer" name="printer" type="text" placeholder="Tell us which printer you have">
+            </div>
+            <fieldset>
+              <legend>Do you use DYMO .label files? <span class="hint">(optional)</span></legend>
+              <div class="choices">
+                <label><input type="radio" name="uses_dymo_label_files" value="yes"> Yes</label>
+                <label><input type="radio" name="uses_dymo_label_files" value="no"> No</label>
+                <label><input type="radio" name="uses_dymo_label_files" value="not sure"> Not sure</label>
+              </div>
+            </fieldset>
+            <input type="hidden" name="reserved" id="reserved" value="no">
+            <button type="submit" id="signup-button">Join the beta</button>
+            <p class="status" id="signup-status" role="status" aria-live="polite"></p>
+            <p class="note">Your email is used only for beta updates.</p>
+          </form>
+        </div>
+
+        <div class="visual">
+          <img class="shot" src="images/peel-screenshot.png" width="1800" height="1186"
+               alt="Peel on a MacBook: an address label for a DYMO 30252 label, filled in from row 3 of a spreadsheet of orders">
+        </div>
+      </div>
+
+      <section aria-labelledby="why">
+        <h2 id="why">Why now</h2>
+        <ul class="points">
+          <li>
+            <strong>DYMO marks its older Mac software obsolete.</strong>
+            DYMO Label v8 carries the note "This software version is obsolete".
+            <span class="sources">Source: <a href="https://help.dymo.com/s/article/Which-software-do-I-need-for-my-DYMO-printer?language=en_US">DYMO, Which software do I need</a></span>
+          </li>
+          <li>
+            <strong>Older DYMO Mac drivers need Rosetta, and Apple is phasing Rosetta out in macOS 28.</strong>
+            DYMO says its older drivers don't work on Apple Silicon without Rosetta, and from macOS 28 Apple keeps Rosetta only for certain older games.
+            <span class="sources">Sources: <a href="https://help.dymo.com/s/article/Which-software-do-I-need-for-my-DYMO-printer?language=en_US">DYMO</a>, <a href="https://support.apple.com/en-us/102527">Apple</a></span>
+          </li>
+          <li>
+            <strong>DYMO Connect is clunky.</strong>
+            It's the replacement, and its current version still relies on Rosetta on Apple Silicon Macs.
+            <span class="sources">Source: <a href="https://help.dymo.com/s/article/DYMO-Connect-installation-issue-on-macOS-27-Golden-Gate?language=en_US">DYMO, installation issue on macOS 27</a></span>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="what">
+        <h2 id="what">What Peel does today</h2>
+        <ul class="points features">
+          <li><strong>A real Mac app</strong>Type right on the label, drag things into place with guides, and undo anything.</li>
+          <li><strong>Native for Apple Silicon</strong>Built for Apple Silicon Macs, with no Rosetta needed.</li>
+          <li><strong>Barcodes included</strong>Add barcodes to any label, at no extra cost.</li>
+          <li><strong>Labels from a spreadsheet</strong>One label per row of a CSV, with names and addresses filled in.</li>
+          <li><strong>Dates and serial numbers</strong>Fill in today's date or a number that counts up as you print.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="price">
+        <h2 id="price">Price</h2>
+        <div class="price">
+          <div>
+            <div class="amount">$24.99</div>
+            <div>Planned price, one-time, barcodes included.</div>
+          </div>
+          <div>
+            <button type="button" class="secondary" id="reserve">Reserve at $24.99</button>
+            <p class="note">No payment now.</p>
+            <p class="status ok" id="reserve-status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="honest" class="honest">
+        <h2 id="honest">Pre-release</h2>
+        <p>I'm testing printer by printer and won't claim support for a model until I've printed on it.</p>
+        <p>I'm Arslan, the solo developer behind Peel. If you tell me which printer you have, I'll know which ones to test first.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Contact: <a href="mailto:arslanbasit15@gmail.com">arslanbasit15@gmail.com</a></p>
+      <p>Your email is used only for beta updates. Visits are counted with GoatCounter, without cookies.</p>
+      <p>Not affiliated with DYMO. DYMO is a trademark of its owner. Mac and Apple Silicon are trademarks of Apple Inc.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Fill these in before publishing: the Formspree form ID (formspree.io/f/<ID>) and the
+    // GoatCounter site code (<CODE>.goatcounter.com).
+    const FORMSPREE_FORM_ID = "";
+    const GOATCOUNTER_CODE = "";
+
+    // GoatCounter counts page visits on its own; signups and reserve clicks are counted as events.
+    if (GOATCOUNTER_CODE) {
+      const counter = document.createElement("script");
+      counter.async = true;
+      counter.src = "https://gc.zgo.at/count.js";
+      counter.dataset.goatcounter = `https://${GOATCOUNTER_CODE}.goatcounter.com/count`;
+      document.head.appendChild(counter);
+    }
+    function countEvent(name, title) {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: name, title: title, event: true });
+      }
+    }
+
+    const form = document.getElementById("signup");
+    const email = document.getElementById("email");
+    const signupButton = document.getElementById("signup-button");
+    const signupStatus = document.getElementById("signup-status");
+
+    function showSignup(message, ok) {
+      signupStatus.textContent = message;
+      signupStatus.className = "status " + (ok ? "ok" : "error");
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!email.value || !email.checkValidity()) {
+        showSignup("Please enter a valid email address.", false);
+        email.focus();
+        return;
+      }
+      if (!FORMSPREE_FORM_ID) {
+        showSignup("Signups aren't connected yet.", false);
+        return;
+      }
+      signupButton.disabled = true;
+      try {
+        const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        });
+        if (!response.ok) throw new Error(String(response.status));
+        countEvent("signup", "Beta signup");
+        form.reset();
+        showSignup("Thanks, you're on the list. I'll email you when the beta is ready.", true);
+      } catch {
+        showSignup("That didn't go through. Please try again, or email me instead.", false);
+      } finally {
+        signupButton.disabled = false;
+      }
+    });
+
+    // Measures intent to buy; nothing is charged.
+    document.getElementById("reserve").addEventListener("click", (event) => {
+      countEvent("reserve", "Reserve at $24.99");
+      document.getElementById("reserved").value = "yes";
+      event.currentTarget.disabled = true;
+      document.getElementById("reserve-status").textContent = "Thanks, you're on the list. Add your email above so I can tell you when it's ready.";
+    });
+  </script>
+</body>
+</html>
